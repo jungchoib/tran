@@ -1,0 +1,70 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+	background-color: #1b1145;
+}
+
+#myVideo {
+    width: 100vw;
+    height: 110vh;
+    object-fit: cover;
+    position: fixed;
+    z-index: -1;
+}
+
+@media (max-width: 575.98px) {
+	#myVideo {
+		height: 130vh;
+	}
+}
+
+.card {
+	background-color: #12064680;
+}
+
+/* All pages div background styles */
+.sp-div {
+	background-color: #0065d82b;
+	backdrop-filter: blur(5px) brightness(0.4) saturate(0.5);
+	border: 1px solid rgba(73, 67, 113, 0.5);
+	color: #cfe1e6;
+	/*background-color: #0071c237;*/
+}
+
+.floating {
+	animation: floating 6s ease-in-out infinite;
+
+}
+
+@keyframes floating {
+	0% { transform: translate(0, 0px); }
+	50% { transform: translate(0, 8px); }
+	100% { transform: translate(0, -0px); }
+}
+
+/* Forms main style */
+.form-control {
+	&:valid {
+		background-color:  #3b34937d!important;
+	}
+	&:focus {
+		border: 1px solid #91c5d5;
+	}
+}
+
+.form-floating > input + label:after {
+   background: rgba(58, 52, 147, 0)!important;
+}
+
+input {
+	color: white!important;
+	&[required] {
+		background-color:  #3b34937d!important;
+		&:focus {
+			background-color:  #3b34937d!important;
+		}
+	}
+}

@@ -1,0 +1,106 @@
+<div class="sp-div rounded h-full p-4">
+    <!--
+    CAMBIAR el CORREO
+    -->
+	<h1 class="font-bold text-2xl"><i class="bi bi-at"></i> {{'email'|translate}}</h1>
+	<p class="text-zinc-300">{{'settings_update_email'|translate}}</p>
+	<div class="flex align-items-center max-w-80 mb-4">
+		<input [(ngModel)]="email" type="text" name="email" class="form-control shadow-none" id="floatingInput" required pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" #emailInput="ngModel">
+		<button (click)="saveMailSecurity()" [ngClass]="{'grayscale-0': currentEmail !== email,'grayscale disabled opacity-50': currentEmail === email}" class="btn btn-warning btn-sm ml-4"><i class="bi bi-floppy-fill"></i></button>
+	</div>
+
+    <!-- Error -->
+    <div *ngIf="alreadyUsed" class="alert alert-error alert-dismissible fade show mt-2 max-w-96" role="alert" [@easeOut]>
+        <i class="bi bi-x-circle-fill mr-2"></i>{{'settings_update_email_inuse'|translate}}
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- OK -->
+    <div *ngIf="mailChanged" class="alert alert-success alert-dismissible fade show mt-2 max-w-96" role="alert" [@easeOut]>
+        <i class="bi bi-check-circle-fill mr-2"></i>{{'settings_update_email_success'|translate}}
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!--
+    CAMBIAR la CONTRASEÑA
+    -->
+	<h1 class="font-bold text-2xl"><i class="bi bi-asterisk"></i> {{'password'|translate}}</h1>
+	<p class="text-zinc-300">{{'settings_update_password'|translate}}</p>
+
+    <form class="needs-validation" novalidate (ngSubmit)="savePassSecurity()">
+        <div class="form-text text-zinc-300">{{'settings_update_password_current'|translate}}</div>
+        <input [(ngModel)]="oldPassword" [class.is-invalid]="wrongPassword" [class.is-valid]="!wrongPassword && formSent" type="password" name="oldPassword" class="form-control shadow-none" style="max-width: 16.5rem" id="floatingInput" required>
+
+        <div class="form-text text-zinc-300">{{'settings_update_password_new'|translate}}</div>
+        <input [(ngModel)]="newPassword" [class.is-invalid]="!passwordsMatch" [class.is-valid]="passwordsMatch && formSent" type="password" name="newPassword1" class="form-control shadow-none" style="max-width: 16.5rem" id="floatingInput" required pattern=".{6,}" #passwordInput="ngModel">
+
+        <div class="form-text text-zinc-300">{{'settings_update_password_repeat'|translate}}</div>
+        <div class="flex align-items-center max-w-80 mb-4">
+            <input [(ngModel)]="confirmNewPassword" [class.is-invalid]="!passwordsMatch" [class.is-valid]="passwordsMatch && formSent" type="password" name="newPassword2" class="form-control shadow-none" id="floatingInput" required>
+            <button *ngIf="!formSent" (click)="savePassSecurity()" class="btn btn-warning btn-sm ml-4"><i class="bi bi-floppy-fill"></i></button>
+            <button *ngIf="formSent" (click)="savePassSecurity()" class="btn btn-warning btn-sm ml-4 grayscale disabled opacity-50"><div class="spinner-border spinner-border-sm"></div></button>
+        </div>
+    </form>
+
+    <!-- Errores -->
+    <div *ngIf="error" class="alert alert-error alert-dismissible fade show mt-2 max-w-96" role="alert" [@easeOut]>
+        <p *ngIf="wrongPassword"><i class="bi bi-x-circle-fill mr-2"></i>{{'settings_update_password_current_incorrect'|translate}}</p>
+        <p *ngIf="!passwordsMatch"><i class="bi bi-x-circle-fill mr-2"></i>{{'settings_update_password_new_nomatch'|translate}}</p>
+        <p *ngIf="passwordsMatchEmpty"><i class="bi bi-x-circle-fill mr-2"></i>{{'settings_update_password_new_empty'|translate}}</p>
+        <p *ngIf="passwordsMatchDuplicate"><i class="bi bi-x-circle-fill mr-2"></i>{{'settings_update_password_same'|translate}}</p>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div *ngIf="(passwordInput.invalid && passwordInput.touched) || (emailInput.invalid && emailInput.touched) " class="pt-6 flex items-center" [@easeOut]>
+        <div class="alert alert-error alert-dismissible fade show max-auto max-w-xl">
+		<i class="bi bi-x-circle text-black"></i>
+            <div>
+                <p *ngIf="passwordInput.invalid && passwordInput.touched">{{'register_make_sure'|translate}}</p>
+                <p *ngIf="emailInput.invalid && emailInput.touched">{{'register_email_notvalid'|translate}}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- OK -->
+    <div *ngIf="success" class="alert alert-success alert-dismissible fade show mt-2 max-w-96" role="alert" [@easeOut]>
+        <i class="bi bi-check-circle-fill mr-2"></i>{{'settings_update_password_success'|translate}}
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!--
+    AUTENTIFICACIÓN en DOS PASOS
+    -->
+    <div *ngIf="is_2FA_active == false">
+        <h1 class="font-bold text-2xl"><i class="bi bi-fingerprint"></i> {{'settings_tab_content_2FA'|translate}}</h1>
+        <p class="text-zinc-300">{{'settings_more_2FA'|translate}}</p>
+        <div *ngIf="buttonClicked1 == false">
+            <button (click)="onButtonClick1True()" class="btn btn-warning btn-sm mt-2"><i class="bi bi-lock-fill"></i> {{'settings_buttom_activate_2FA'|translate}}</button>
+	    </div>
+        <div *ngIf="buttonClicked1 == true && buttonClicked2 == false" class="sp-div pl-4 mr-4 mt-2 w-85 rounded-md md:mb-0 h-fit divide-x divide-slate-500">
+            <h1 class="text-300 mt-2"> {{'settings_sure_2FA'|translate}}</h1>
+            <button (click)="sendmail()" class="btn btn-warning btn-sm mt-3 mb-3 mr-3 ml-80"><i class="bi bi-lock-fill"></i> {{'settings_yes_2FA'|translate}}</button>
+            <button (click)="onButtonClick1False()" class="btn btn-warning btn-sm mt-3 mb-3 mr-3"><i class="bi bi-lock-fill"></i> {{'settings_no_2FA'|translate}}</button>
+        </div>
+        <div *ngIf="buttonClicked1 == true && buttonClicked2 == true" class="sp-div pl-4 mr-4 mt-2 w-85 rounded-md md:mb-0 h-fit divide-x divide-slate-500">
+            <p class="text-300 mt-2"> {{'settings_enter_2FA'|translate}}</p>
+            <p class="form-text mt-2"> {{'settings_enter2_2FA'|translate}}</p>
+            <div class="code-input flex">
+                <input [(ngModel)]="entered_token" type="text" name="entered_token" maxlength="6" pattern="\d" class="form-control shadow-none btn-sm mb-3 mr-3" style="max-width: 7rem" id="floatingInput" required>
+                <button (click)="compareTwoFAToken()" class="btn btn-warning btn-sm ml-3>"><i class="bi bi-floppy-fill"></i></button>
+                <button (click)="onButtonClick1False()" class="btn btn-warning btn-sm ml-3"><i class="bi bi-lock-fill"></i> {{'settings_cancel_2FA'|translate}}</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="is_2FA_active == true">
+        <h1 class="font-bold text-2xl"><i class="bi bi-fingerprint"></i> {{'settings_tab_content_2FA'|translate}}</h1>
+        <div *ngIf="buttonClicked1 == false">
+        <button (click)="onButtonClick1True()" class="btn btn-warning btn-sm mt-2"><i class="bi bi-lock-fill"></i> {{'settings_buttom_deactivate_2FA'|translate}}</button>
+        </div>
+        <div *ngIf="buttonClicked1 == true"  class="pl-4 mr-4 mt-2 w-85 rounded-md md:mb-0 h-fit divide-x divide-slate-500">
+            <h1 class="text-300 mt-2"> {{'settings_sure2_2FA'|translate}}</h1>
+            <button (click)="sendmail2()" class="btn btn-warning btn-sm mt-3 mb-3 mr-3 ml-80"><i class="bi bi-lock-fill"></i> {{'settings_yes_2FA'|translate}}</button>
+            <button (click)="onButtonClick1False()" class="btn btn-warning btn-sm mt-3 mb-3 mr-3"><i class="bi bi-lock-fill"></i> {{'settings_no_2FA'|translate}}</button>
+        </div>
+        </div>
+</div>

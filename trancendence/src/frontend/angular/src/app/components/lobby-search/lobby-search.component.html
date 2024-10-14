@@ -1,0 +1,27 @@
+<div class="sp-div w-full flex flex-col items-center justify-center place-content-center rounded-lg pt-2">
+	<h1 class="font-bold tracking-wide text-lg">
+		{{ 'lobby_search' | translate }}
+	</h1>
+	<div
+		class="flex w-full  text-white place-content-center rounded-xl shadow-md subpixel-antialiased items-center justify-center mt-4">
+		<div class="flex-1 h-full w-full flex flex-col items-center justify-center">
+			<input #inputField class="form-control w-full max-h-12 max-w-96 shadow-none" [formControl]="myControl" type="text" autofocus
+				placeholder="{{ 'online_name' | translate}}">
+			<div class="flex-1 items-start gap-2.5 p-2 w-9/12 min-h-80 max-h-80 overflow-y-scroll items-start gap-5" style="background-color: rgba(30, 27, 75, 0.289);">
+				<div *ngFor="let game of filtered_games$ | async" class="flex items-center w-full font-bold">
+					<div *ngIf="game.available" class="flex items-center w-full font-bold my-2">
+						<h1 class="flex-1">{{ game.name }}</h1>
+						<div class="flex-1 flex justify-end">
+							<button (click)="joinGame(game)" class="btn btn-warning">{{'lobby_search_join'| translate}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="flex items-center text-center mb-4">
+		<button (click)="showOnlineMatchGenerator()" type="button" class="mt-4 btn btn-warning">
+			<i class="bi bi-plus-circle-fill"></i> {{'lobby_search_create'| translate}}
+		</button>
+	</div>
+</div>

@@ -1,0 +1,18 @@
+.canvas-container {
+    display: relative;
+    height: 100%;
+    width: 100%;
+}
+
+/*.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;  Ajusta esto según tus necesidades 
+}*/
+
+#c {
+    width: 50%;
+    height: 50%;
+    display: block;
+}

@@ -1,0 +1,10 @@
+i {
+	transition-duration: 90ms;
+}
+
+.textInput{
+	border-radius: 5px;
+	background-color: rgba(74, 141, 170, 0.144);
+	backdrop-filter: brightness(0.9);
+	width: 100%;
+}

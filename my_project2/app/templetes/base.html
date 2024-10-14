@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Django Project{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- 정적 파일 링크 -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">홈</a></li>
+                <li><a href="{% url 'login' %}">로그인</a></li>
+                <li><a href="{% url 'register' %}">회원가입</a></li>
+                <li><a href="{% url 'logout' %}">로그아웃</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- 기본 콘텐츠 영역 -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My Django Project. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

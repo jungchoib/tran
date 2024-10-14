@@ -1,0 +1,11 @@
+.footer {
+	position: fixed;
+	bottom: 0;
+	/*line-height: 20px;*/
+	color: #dbeff1;
+	background-color: rgba(47, 50, 98, 0.806);
+}
+
+.enlace-persona {
+	@apply link-info hover:underline underline-offset-4;
+}

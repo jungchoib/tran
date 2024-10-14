@@ -1,0 +1,4 @@
+.selected {
+	border: 4px solid white;
+	filter: brightness(.9);
+}

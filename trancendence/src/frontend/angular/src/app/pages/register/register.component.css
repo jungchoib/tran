@@ -1,0 +1,19 @@
+.form-floating > input + label {
+	color: #cfe1e6;
+}
+
+.sp-div {
+	position: absolute;
+	top: 20%;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 60rem;
+}
+
+.form-text {
+	color: #cfe1e6;
+}
+
+.scrollable-container {
+	border: 1px solid #ccc;
+}
